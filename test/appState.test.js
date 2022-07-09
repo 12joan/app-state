@@ -33,3 +33,24 @@ test('can transform values', () => {
   appState.transform('app.user.age', age => age + 1)
   expect(appState.get('app.user.age')).toBe(26)
 })
+
+test('can add and remove event listeners', () => {
+  const appListener = jest.fn()
+  const appUserListener = jest.fn()
+  const appUserNameListener = jest.fn()
+  const appUserAgeListener = jest.fn()
+
+  appState.addEventListener('app', appListener)
+  appState.addEventListener('app.user', appUserListener)
+  appState.addEventListener('app.user.name', appUserNameListener)
+  appState.addEventListener('app.user.age', appUserAgeListener)
+
+  appState.removeEventListener('app.user.age', appUserAgeListener)
+
+  appState.set('app.user', { name: 'Bob', age: 30 })
+
+  expect(appListener).toHaveBeenCalledWith({ user: { name: 'Bob', age: 30 } })
+  expect(appUserListener).toHaveBeenCalledWith({ name: 'Bob', age: 30 })
+  expect(appUserNameListener).toHaveBeenCalledWith('Bob')
+  expect(appUserAgeListener).not.toHaveBeenCalled()
+})
