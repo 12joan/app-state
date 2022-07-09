@@ -1,8 +1,17 @@
 {
-  "name": "app-state",
+  "name": "@12joan/app-state",
   "version": "0.1.0",
-  "license": "MIT",
+  "source": "src/appState.ts",
+  "license": "Unlicense",
   "type": "module",
+  "exports": {
+    ".": "./dist/appState.js"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest"
