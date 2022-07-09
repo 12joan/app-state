@@ -54,3 +54,16 @@ test('can add and remove event listeners', () => {
   expect(appUserNameListener).toHaveBeenCalledWith('Bob')
   expect(appUserAgeListener).not.toHaveBeenCalled()
 })
+
+test('transactions cause event listeners to only fire once', () => {
+  const appListener = jest.fn()
+  appState.addEventListener('app', appListener)
+
+  appState.transaction(t => {
+    t.set('app.user', { name: 'Bob', age: 30 })
+    t.set('app.user.name', 'Charlie')
+  })
+
+  expect(appListener).toHaveBeenCalledTimes(1)
+  expect(appListener).toHaveBeenCalledWith({ user: { name: 'Charlie', age: 30 } })
+})
