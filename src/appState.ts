@@ -12,10 +12,14 @@ class AppState {
     return resolvePathString(this.state, pathString)
   }
 
-  set(pathString: string, value: any) : void {
+  transform(pathString: string, transform: (value: any) => any) : void {
     const [parent, basename] = popPathString(pathString)
     const parentState = resolvePathString(this.state, parent) || this.state
-    parentState[basename] = value
+    parentState[basename] = transform(parentState[basename])
+  }
+
+  set(pathString: string, value: any) : void {
+    this.transform(pathString, () => value)
   }
 }
 
